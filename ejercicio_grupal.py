@@ -7,8 +7,15 @@ import logging
 
 def dividir(a, b):
     """Devuelve la división de dos números."""
-    return a / b  
-
+    try:
+        return a / b
+    except ZeroDivisionError:
+        print("No se puede dividir para 0")
+        return None
+    except TypeError:
+        print("Los valores deben ser números")
+        return None
+    
 def promedio(lista_numeros):
     """Calcula el promedio de una lista de números."""
     total = 0

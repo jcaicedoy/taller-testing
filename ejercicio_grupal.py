@@ -18,10 +18,21 @@ def dividir(a, b):
     
 def promedio(lista_numeros):
     """Calcula el promedio de una lista de números."""
-    total = 0
-    for n in lista_numeros:
-        total += n
-    return total / len(lista_numeros)  
+    try:
+        total = 0
+
+        for numero in lista_numeros:
+            total += numero
+
+        return total / len(lista_numeros)
+
+    except ZeroDivisionError:
+        print("No se puede calcular el promedio de una lista vacía")
+        return None
+
+    except TypeError:
+        print("La lista debe contener únicamente números")
+        return None
 
 def obtener_elemento(lista, indice):
     """Devuelve un elemento de la lista según el índice indicado."""

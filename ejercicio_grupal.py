@@ -49,10 +49,18 @@ def obtener_elemento(lista, indice):
 
 def calcular_total(precios):
     """Suma los precios de una lista."""
-    total = 0
-    for p in precios:
-        total += p
-    return total  
+    try:
+        total = 0
+
+        for precio in precios:
+            total += precio
+
+        return total
+
+    except TypeError:
+        print("Error: todos los precios deben ser valores numéricos")
+        return None
+
 
 # ------------------------------------------------------
 # FUNCIÓN PRINCIPAL

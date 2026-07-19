@@ -36,7 +36,16 @@ def promedio(lista_numeros):
 
 def obtener_elemento(lista, indice):
     """Devuelve un elemento de la lista según el índice indicado."""
-    return lista[indice] 
+    try:
+        return lista[indice]
+
+    except IndexError:
+        print(f"El índice {indice} no existe en la lista")
+        return None
+
+    except TypeError:
+        print("El índice debe ser un número entero")
+        return None
 
 def calcular_total(precios):
     """Suma los precios de una lista."""

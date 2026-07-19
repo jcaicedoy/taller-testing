@@ -43,25 +43,73 @@ logger = logging.getLogger(__name__)
 
 def dividir(a, b):
     """Devuelve la división de dos números."""
-    return a / b  
+    return a / b
+
 
 def promedio(lista_numeros):
     """Calcula el promedio de una lista de números."""
     total = 0
     for n in lista_numeros:
         total += n
-    return total / len(lista_numeros)  
+    return total / len(lista_numeros)
+
 
 def obtener_elemento(lista, indice):
     """Devuelve un elemento de la lista según el índice indicado."""
-    return lista[indice] 
+    return lista[indice]
+
 
 def calcular_total(precios):
     """Suma los precios de una lista."""
     total = 0
     for p in precios:
         total += p
-    return total  
+    return total
+
+
+# ------------------------------------------------------
+# EJECUCIÓN CONTROLADA DE CADA INCIDENCIA
+# ------------------------------------------------------
+
+def ejecutar_prueba(nombre, funcion):
+    """
+    Ejecuta una prueba de forma aislada.
+    Si ocurre una excepción:
+    - se muestra en consola,
+    - se registra en app_errores.log,
+    - se envía a Sentry,
+    - y el programa continúa con la siguiente prueba.
+    """
+    logger.info("Inicio de prueba: %s", nombre)
+
+    try:
+        resultado = funcion()
+        print(f"[OK] {nombre}: {resultado}")
+        logger.info("Prueba completada correctamente: %s. Resultado: %s", nombre, resultado)
+
+    except Exception as error:
+        print(f"[ERROR] {nombre}: {type(error).__name__}: {error}")
+
+        # Incluye automáticamente el traceback completo en el archivo .log.
+        logger.exception("Error detectado en la prueba '%s'", nombre)
+
+        # Envía la excepción con contexto a Sentry.
+        with sentry_sdk.push_scope() as scope:
+            scope.set_tag("taller", "gestion_incidencias")
+            scope.set_tag("prueba", nombre)
+            scope.set_context(
+                "detalle_incidencia",
+                {
+                    "nombre": nombre,
+                    "tipo_error": type(error).__name__,
+                    "mensaje": str(error),
+                },
+            )
+            sentry_sdk.capture_exception(error)
+
+    finally:
+        logger.info("Fin de prueba: %s", nombre)
+
 
 # ------------------------------------------------------
 # FUNCIÓN PRINCIPAL

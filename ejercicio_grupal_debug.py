@@ -140,7 +140,7 @@ def main():
         else:
             print("Elemento:", elemento)
 
-        precios = [10, 20, "treinta", 40]
+        precios = [10, 20, 20, 40]
         total = calcular_total(precios)
         print("Total de precios válidos:", total)
 
